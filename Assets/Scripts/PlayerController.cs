@@ -6,20 +6,19 @@ using DG.Tweening;
 [SelectionBase]
 public class PlayerController : MonoBehaviour
 {
-    public bool walking = false;
-    private bool isSearching = false;
+    public bool walking = false;//是否正在行走 控制待机与走路动画的切换
+    private bool isSearching = false;//是否正在寻路
+    private bool findPath=false;//是否成功找到路径
     [Space]
 
-    public Transform currentCube;
-    public Transform clickedCube;
-    public Transform indicator;
+    public Transform currentCube;//玩家当前所在方块
+    public Transform clickedCube;//玩家点击的目标方块
+    public Transform indicator;//点击指示器
 
     [Space]
 
-    public List<Transform> finalPath = new List<Transform>();
-
+    public List<Transform> finalPath = new List<Transform>();//最终的寻路路径
     private float blend;//上下楼梯极值控制
-
     void Start()
     {
         RayCastDown();
@@ -42,7 +41,7 @@ public class PlayerController : MonoBehaviour
             transform.parent = null;
         }
 
-        // CLICK ON CUBE
+        // 玩家点击方块触发的逻辑
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -74,9 +73,8 @@ public class PlayerController : MonoBehaviour
 
     void FindPath()
     {
-        
-        List<Transform> nextCubes = new List<Transform>();
-        List<Transform> pastCubes = new List<Transform>();
+        List<Transform> nextCubes = new List<Transform>();//待探索的方块
+        List<Transform> pastCubes = new List<Transform>();//已探索的方块
 
         foreach (WalkPath path in currentCube.GetComponent<Walkable>().possiblePaths)
         {
@@ -90,9 +88,9 @@ public class PlayerController : MonoBehaviour
         pastCubes.Add(currentCube);
 
         ExploreCube(nextCubes, pastCubes);
-        BuildPath();
+        BuildPath(pastCubes);
     }
-
+    //用的广搜，同时找所有可能的路径，最先找到的那条路径成功返回，否则遍历所有路径再返回
     void ExploreCube(List<Transform> nextCubes, List<Transform> visitedCubes)
     {
         Transform current = nextCubes.First();
@@ -100,6 +98,7 @@ public class PlayerController : MonoBehaviour
 
         if (current == clickedCube)
         {
+            findPath = true;
             return;
         }
 
@@ -120,9 +119,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void BuildPath()
+    void BuildPath(List<Transform> visitedCubes)
     {
-        Transform cube = clickedCube;
+        float minDistance = float.MaxValue;
+        Transform nearestCube = null;
+        Transform cube = null;
+        foreach (Transform singleCube in visitedCubes)
+        {
+            float distance = Vector3.Distance(singleCube.position, clickedCube.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                 nearestCube = singleCube;
+            }
+        }
+        cube = findPath?clickedCube:nearestCube;
         while (cube != currentCube)
         {
             finalPath.Add(cube);
@@ -131,8 +142,7 @@ public class PlayerController : MonoBehaviour
             else
                 return;
         }
-
-        finalPath.Insert(0, clickedCube);
+        //finalPath.Insert(0, clickedCube);
         
         FollowPath();
     }
@@ -143,14 +153,14 @@ public class PlayerController : MonoBehaviour
 
         walking = true;
 
-        for (int i = finalPath.Count - 1; i > 0; i--)
+        for (int i = finalPath.Count - 1; i >= 0; i--)
         {
             float time = finalPath[i].GetComponent<Walkable>().isStair ? 1.5f : 1;
 
             s.Append(transform.DOMove(finalPath[i].GetComponent<Walkable>().GetWalkPoint(), .2f * time).SetEase(Ease.Linear));
 
             if(!finalPath[i].GetComponent<Walkable>().dontRotate)
-               s.Join(transform.DOLookAt(finalPath[i].position, .1f, AxisConstraint.Y, Vector3.up));
+               s.Join(transform.DOLookAt(finalPath[i].position, .1f, AxisConstraint.Y, Vector3.up));//移动的同时播放朝向动画
         }
 
         if (clickedCube.GetComponent<Walkable>().isButton)
@@ -170,10 +180,11 @@ public class PlayerController : MonoBehaviour
         }
         finalPath.Clear();
         walking = false;
+        findPath = false;
     }
 
 
-    //从玩家向下发射射线用于获取当前玩家脚下方块的信息
+    //从玩家向下发射射线用于获取当前玩家脚下方块的transform
     public void RayCastDown()
     {
 
@@ -193,7 +204,7 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     DOVirtual.Float(GetBlend(), 0, .1f, SetBlend);
-                }
+                }//进出楼梯动画控制数的切换
             }
         }
     }
@@ -213,5 +224,4 @@ public class PlayerController : MonoBehaviour
     {
         GetComponentInChildren<Animator>().SetFloat("Blend", x);
     }
-
 }

@@ -29,17 +29,14 @@ public class PlayerController : MonoBehaviour
         //GET CURRENT CUBE (UNDER PLAYER) 获取玩家当前所在的方块
 
         RayCastDown();
-
+        transform.parent = currentCube.parent;
+        //Debug.Log(currentCube+" "+transform.parent);
         if (isSearching) return;
-        //确保物体旋转时玩家跟随着一起动
-        if (currentCube.GetComponent<Walkable>().movingGround)
-        {
-            transform.parent = currentCube.parent;
-        }
-        else
-        {
-            transform.parent = null;
-        }
+        ////确保物体旋转时玩家跟随着一起动
+        //if (!currentCube.GetComponent<Walkable>().movingGround)
+        //{
+        //    transform.parent = null;
+        //}
 
         // 玩家点击方块触发的逻辑
 
@@ -81,14 +78,17 @@ public class PlayerController : MonoBehaviour
             if (path.active)
             {
                 nextCubes.Add(path.target);
+                //Debug.Log("下一个的" + path.target);
                 path.target.GetComponent<Walkable>().previousBlock = currentCube;
             }
         }
-
+        //Debug.Log("过去的" + currentCube);
         pastCubes.Add(currentCube);
-
-        ExploreCube(nextCubes, pastCubes);
-        BuildPath(pastCubes);
+        if (nextCubes.Count > 0)
+        {
+            ExploreCube(nextCubes, pastCubes);
+            BuildPath(pastCubes);
+        }
     }
     //用的广搜，同时找所有可能的路径，最先找到的那条路径成功返回，否则遍历所有路径再返回
     void ExploreCube(List<Transform> nextCubes, List<Transform> visitedCubes)
@@ -160,7 +160,7 @@ public class PlayerController : MonoBehaviour
             s.Append(transform.DOMove(finalPath[i].GetComponent<Walkable>().GetWalkPoint(), .2f * time).SetEase(Ease.Linear));
 
             if(!finalPath[i].GetComponent<Walkable>().dontRotate)
-               s.Join(transform.DOLookAt(finalPath[i].position, .1f, AxisConstraint.Y, Vector3.up));//移动的同时播放朝向动画
+               s.Join(transform.DOLookAt(finalPath[i].position, .1f, AxisConstraint.Y, currentCube.up));//移动的同时播放朝向动画
         }
 
         if (clickedCube.GetComponent<Walkable>().isButton)

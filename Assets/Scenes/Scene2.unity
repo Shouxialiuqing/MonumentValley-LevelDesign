@@ -1674,7 +1674,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e30ae3e0af2d2b84d9bb63666912f146, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  possiblePaths: []
+  possiblePaths:
+  - target: {fileID: 1441929436}
+    active: 1
   previousBlock: {fileID: 0}
   isStair: 0
   movingGround: 0
@@ -2113,6 +2115,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1257221142}
     m_Modifications:
+    - target: {fileID: 1591896485560145650, guid: d49017b866a018c4995359e3ea6e6c6d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2867353667967072589, guid: d49017b866a018c4995359e3ea6e6c6d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2489,7 +2496,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2534,11 +2541,13 @@ MonoBehaviour:
   possiblePaths:
   - target: {fileID: 1483840949}
     active: 1
+  - target: {fileID: 1952363249}
+    active: 0
   previousBlock: {fileID: 0}
   isStair: 0
   movingGround: 0
   isButton: 0
-  dontRotate: 1
+  dontRotate: 0
   walkPointOffset: 0.5
   stairOffset: 0.4
 --- !u!1 &280634041
@@ -2932,7 +2941,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3221,7 +3230,7 @@ Transform:
   m_GameObject: {fileID: 345062915}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.5, y: 11.6, z: -3}
+  m_LocalPosition: {x: -1.5, y: 11.6, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3298,7 +3307,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3355,7 +3364,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e30ae3e0af2d2b84d9bb63666912f146, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  possiblePaths: []
+  possiblePaths:
+  - target: {fileID: 522900829}
+    active: 1
+  - target: {fileID: 491653716}
+    active: 1
   previousBlock: {fileID: 0}
   isStair: 0
   movingGround: 0
@@ -3391,12 +3404,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 372006290}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.70710665, y: -0.00048750642, z: -0.00048750642, w: 0.70710665}
-  m_LocalPosition: {x: 1.5, y: -4.0000005, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0.0006894382, w: 0.99999976}
+  m_LocalPosition: {x: 3.5, y: 4.6000004, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1257221142}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 53.225, z: -53.304}
 --- !u!114 &372006292
 MonoBehaviour:
@@ -3415,7 +3428,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
-  movingGround: 1
+  movingGround: 0
   isButton: 0
   dontRotate: 0
   walkPointOffset: 0.5
@@ -3672,7 +3685,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4387,7 +4400,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4429,10 +4442,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e30ae3e0af2d2b84d9bb63666912f146, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  possiblePaths: []
+  possiblePaths:
+  - target: {fileID: 1130768235}
+    active: 1
+  - target: {fileID: 2002437683}
+    active: 1
   previousBlock: {fileID: 0}
   isStair: 0
-  movingGround: 0
+  movingGround: 1
   isButton: 0
   dontRotate: 0
   walkPointOffset: 0.5
@@ -4731,7 +4748,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4775,7 +4792,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   possiblePaths:
   - target: {fileID: 346340349}
-    active: 0
+    active: 1
   - target: {fileID: 2002527922}
     active: 1
   previousBlock: {fileID: 346340349}
@@ -4861,7 +4878,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5096,7 +5113,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5138,7 +5155,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e30ae3e0af2d2b84d9bb63666912f146, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  possiblePaths: []
+  possiblePaths:
+  - target: {fileID: 917271419}
+    active: 1
+  - target: {fileID: 2055680671}
+    active: 1
   previousBlock: {fileID: 0}
   isStair: 0
   movingGround: 1
@@ -8273,7 +8294,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8324,7 +8345,7 @@ MonoBehaviour:
   isStair: 0
   movingGround: 0
   isButton: 0
-  dontRotate: 1
+  dontRotate: 0
   walkPointOffset: 0.5
   stairOffset: 0.4
 --- !u!1 &900158623
@@ -8754,7 +8775,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9094,7 +9115,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9906,7 +9927,7 @@ MonoBehaviour:
     active: 0
   previousBlock: {fileID: 2055680671}
   isStair: 0
-  movingGround: 1
+  movingGround: 0
   isButton: 0
   dontRotate: 0
   walkPointOffset: 0.5
@@ -11567,7 +11588,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -12132,18 +12153,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 265835667}
   pathConditions:
-  - pathConditionName: LeftConnection
+  - pathConditionName: MiddleConnection
+    conditions:
+    - conditionObject: {fileID: 574809883}
+      eulerAngle: {x: 0, y: 90, z: 0}
+    paths:
+    - block: {fileID: 491653721}
+      index: 0
+    - block: {fileID: 346340350}
+      index: 1
+  - pathConditionName: RightConnection
     conditions:
     - conditionObject: {fileID: 1257221142}
       eulerAngle: {x: 0, y: 0, z: 0}
     paths:
     - block: {fileID: 1952363253}
-      index: 0
+      index: 1
     - block: {fileID: 268256046}
+      index: 1
+  - pathConditionName: LeftConnection
+    conditions:
+    - conditionObject: {fileID: 574809883}
+      eulerAngle: {x: 0, y: 0, z: 0}
+    paths:
+    - block: {fileID: 1032718558}
+      index: 1
+    - block: {fileID: 2055680675}
+      index: 1
+  - pathConditionName: StartConnection
+    conditions:
+    - conditionObject: {fileID: 1257221142}
+      eulerAngle: {x: 90, y: 0, z: 0}
+    paths:
+    - block: {fileID: 372006292}
       index: 0
+    - block: {fileID: 1989292839}
+      index: 1
   pivots:
-  - {fileID: 1257221142}
-  - {fileID: 574809883}
+  - pivotTransform: {fileID: 1257221142}
+    rotationAxis: {x: 1, y: 0, z: 0}
+    rotationAngle: 90
+    rotationDuration: 0.6
+    rotationEase: 27
+    isButtonControl: 0
+  - pivotTransform: {fileID: 574809883}
+    rotationAxis: {x: 0, y: 1, z: 0}
+    rotationAngle: 90
+    rotationDuration: 0.6
+    rotationEase: 27
+    isButtonControl: 0
   objectsToHide: []
 --- !u!4 &1166691376
 Transform:
@@ -12684,7 +12742,6 @@ Transform:
   - {fileID: 91611845}
   - {fileID: 2002437683}
   - {fileID: 1989292835}
-  - {fileID: 372006291}
   - {fileID: 472730832}
   - {fileID: 1130768235}
   - {fileID: 1952363249}
@@ -14584,7 +14641,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14635,7 +14692,7 @@ MonoBehaviour:
   isStair: 0
   movingGround: 0
   isButton: 0
-  dontRotate: 1
+  dontRotate: 0
   walkPointOffset: 0.5
   stairOffset: 0.4
 --- !u!1 &1487182051
@@ -20659,7 +20716,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -20710,7 +20767,7 @@ MonoBehaviour:
   isStair: 0
   movingGround: 0
   isButton: 0
-  dontRotate: 1
+  dontRotate: 0
   walkPointOffset: 0.5
   stairOffset: 0.4
 --- !u!1 &1932203958
@@ -21275,7 +21332,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21324,7 +21381,7 @@ MonoBehaviour:
     active: 0
   previousBlock: {fileID: 1130768235}
   isStair: 0
-  movingGround: 0
+  movingGround: 1
   isButton: 0
   dontRotate: 0
   walkPointOffset: 0.5
@@ -21510,7 +21567,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21554,6 +21611,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   possiblePaths:
   - target: {fileID: 321488831}
+    active: 1
+  - target: {fileID: 372006291}
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
@@ -21743,7 +21802,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21873,7 +21932,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -22213,7 +22272,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd81d41c0455e7843b211164a9bcd9b0, type: 2}
+  - {fileID: 2100000, guid: de99015c35c625d4cb19f7e79522e6a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -23968,6 +24027,7 @@ SceneRoots:
   - {fileID: 2097338218}
   - {fileID: 1418852552}
   - {fileID: 574809883}
+  - {fileID: 372006291}
   - {fileID: 1257221142}
   - {fileID: 345062916}
   - {fileID: 1166691376}

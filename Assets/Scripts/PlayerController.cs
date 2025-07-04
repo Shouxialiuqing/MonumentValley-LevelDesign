@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using DG.Tweening;
+using UnityEngine.UIElements;
 [SelectionBase]
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
     public bool walking = false;//是否正在行走 控制待机与走路动画的切换
     private bool isSearching = false;//是否正在寻路
     private bool findPath=false;//是否成功找到路径
@@ -14,13 +16,19 @@ public class PlayerController : MonoBehaviour
     public Transform currentCube;//玩家当前所在方块
     public Transform clickedCube;//玩家点击的目标方块
     public Transform indicator;//点击指示器
-
-    [Space]
+    static Vector3 temp=Vector3.zero;
+   [Space]
 
     public List<Transform> finalPath = new List<Transform>();//最终的寻路路径
     private float blend;//上下楼梯极值控制
+
+    private void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
+        DOTween.SetTweensCapacity(10000, 100);
         RayCastDown();
     }
 
@@ -66,6 +74,10 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+        Debug.DrawRay(transform.position, transform.up * 5f, Color.green); // 角色上方向
+        Debug.DrawRay(transform.position, temp * 5f, Color.yellow); // 角色上方向
+        //Debug.Log(temp);
+        Debug.DrawRay(currentCube.position, currentCube.up * 5f, Color.red); // 方块上方向
     }
 
     void FindPath()
@@ -89,6 +101,7 @@ public class PlayerController : MonoBehaviour
             ExploreCube(nextCubes, pastCubes);
             BuildPath(pastCubes);
         }
+        
     }
     //用的广搜，同时找所有可能的路径，最先找到的那条路径成功返回，否则遍历所有路径再返回
     void ExploreCube(List<Transform> nextCubes, List<Transform> visitedCubes)
@@ -142,7 +155,8 @@ public class PlayerController : MonoBehaviour
             else
                 return;
         }
-        //finalPath.Insert(0, clickedCube);
+        cube = findPath ? clickedCube : nearestCube;
+        //finalPath.Insert(0, cube);
         
         FollowPath();
     }
@@ -157,10 +171,59 @@ public class PlayerController : MonoBehaviour
         {
             float time = finalPath[i].GetComponent<Walkable>().isStair ? 1.5f : 1;
 
-            s.Append(transform.DOMove(finalPath[i].GetComponent<Walkable>().GetWalkPoint(), .2f * time).SetEase(Ease.Linear));
+            s.Append(transform.DOMove(finalPath[i].GetComponent<Walkable>().GetWalkPoint(), time*0.2f).SetEase(Ease.Linear)).OnUpdate(() =>
+            {
+                if (finalPath == null || i < 0 || i >= finalPath.Count)
+                {
+                    return; // 安全退出
+                }
+                transform.up = finalPath[i].up;
+            });
 
-            if(!finalPath[i].GetComponent<Walkable>().dontRotate)
-               s.Join(transform.DOLookAt(finalPath[i].position, .1f, AxisConstraint.Y, currentCube.up));//移动的同时播放朝向动画
+            if (!finalPath[i].GetComponent<Walkable>().dontRotate)
+            {
+                Vector3 dir = Vector3.zero;
+                if (i == finalPath.Count - 1) dir = finalPath[i].position - currentCube.position;
+                else dir = finalPath[i].position - finalPath[i+1].position;
+                //鬼知道我做了多少次实验才得出的这个计算方法，又被线性代数玩了哈哈
+                if (dir.sqrMagnitude > 0.0001f)
+                {
+
+                    // 1. 获取 finalPath[i] 的 up (Y) 和 forward (Z) 方向
+                    Vector3 up = finalPath[i].up;
+                    Vector3 forward = finalPath[i].forward;
+                    //Debug.Log($"局部坐标系：Up方向 = {up}, Forward方向 = {forward}");
+
+                    // 2. 计算平面的法向量 (normal = up × forward)
+                    Vector3 planeNormal = Vector3.Cross(up, forward).normalized;
+
+                    // 3. 计算 dir 在平面上的投影 (dir - (dir·normal) * normal)
+                    float dotDirNormal = Vector3.Dot(dir, planeNormal);
+                    Vector3 projectedDir = dir - dotDirNormal * planeNormal;
+
+                    // 4. 计算 projectedDir 垂直于up方向的分量作为前向量
+                    if (projectedDir != Vector3.zero && up != Vector3.zero)
+                    {
+                        Vector3 proj = Vector3.Project(projectedDir, up);
+                        //Debug.Log($"投影方向在向上的方向上的投影{proj}");
+                        // 最终 dir = 投影后的向量 * sinθ
+                        dir = projectedDir-proj;
+                        //Debug.Log($"最终方向向量 = {dir}");
+
+                    }
+                    
+                    temp = dir;
+                    Debug.DrawRay(transform.position, temp * 5f, Color.yellow); // 角色上方向
+                    Quaternion targetRot = Quaternion.LookRotation(dir, finalPath[i].up);
+
+                    // 然后平滑过渡到它（局部旋转）
+                    s.Join(transform.DORotateQuaternion(targetRot, .1f));
+
+                }
+
+
+            }
+
         }
 
         if (clickedCube.GetComponent<Walkable>().isButton)
@@ -199,7 +262,7 @@ public class PlayerController : MonoBehaviour
 
                 if (playerHit.transform.GetComponent<Walkable>().isStair)
                 {
-                    DOVirtual.Float(GetBlend(), blend, .1f, SetBlend);//在0.1s内过渡到blend
+                    DOVirtual.Float(GetBlend(), blend, 10.0f, SetBlend);//在0.1s内过渡到blend
                 }
                 else
                 {

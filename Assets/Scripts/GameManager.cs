@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
                         pivot.rotationDuration,
                         RotateMode.WorldAxisAdd
                     ).SetEase(pivot.rotationEase);
+                    PlayerController.instance.RayCastDown();//更新脚下方块的transform信息;
                 }
                
             }

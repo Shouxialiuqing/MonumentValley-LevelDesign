@@ -59,8 +59,8 @@ public class GameManager : MonoBehaviour
                         pivot.rotationAxis * pivot.rotationAngle * multiplier,
                         pivot.rotationDuration,
                         RotateMode.WorldAxisAdd
-                    ).SetEase(pivot.rotationEase);
-                    PlayerController.instance.RayCastDown();//更新脚下方块的transform信息;
+                    ).SetEase(Ease.OutBack);
+                    PlayerController.instance.UpdateCurrentCube();//更新脚下方块的transform信息;
                 }
                
             }
@@ -108,9 +108,12 @@ public class SinglePath//每个walkable中想要动态设置是否激活的索�
 public class PivotData//旋转轴数据类，储存每次按下键后的旋转情况
 {
     public Transform pivotTransform;
+    [Tooltip("旋转向量:绕哪个向量旋转")]
     public Vector3 rotationAxis = Vector3.up;
+    [Tooltip("旋转角度:每次按键输入旋转多少度")]
     public float rotationAngle = 90f;
+    [Tooltip("旋转时长:每次旋转需要多久")]
     public float rotationDuration = 0.6f;
-    public Ease rotationEase = Ease.OutBack;
+    [Tooltip("是否由按钮控制旋转")]
     public bool isButtonControl=false;
 }

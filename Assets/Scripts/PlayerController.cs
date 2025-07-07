@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour
     public static PlayerController instance;
     public bool walking = false;//是否正在行走 控制待机与走路动画的切换
     private bool isSearching = false;//是否正在寻路
-    private bool findPath=false;//是否成功找到路径
     [Space]
 
     public Transform currentCube;//玩家当前所在方块
@@ -29,14 +28,14 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         DOTween.SetTweensCapacity(10000, 100);
-        RayCastDown();
+        UpdateCurrentCube();
     }
 
     void Update()
     {
-        //GET CURRENT CUBE (UNDER PLAYER) 获取玩家当前所在的方块
-
-        RayCastDown();
+        UpdateCurrentCube();
+        //获取玩家当前所在的方块
+        GetComponentInChildren<Animator>().SetBool("walking", walking);
         transform.parent = currentCube.parent;
         //Debug.Log(currentCube+" "+transform.parent);
         if (isSearching) return;
@@ -48,29 +47,45 @@ public class PlayerController : MonoBehaviour
 
         // 玩家点击方块触发的逻辑
 
+        // 鼠标点击触发寻路（只响应特定标签的方块）
         if (Input.GetMouseButtonDown(0))
         {
-            Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition); RaycastHit mouseHit;
+            Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit[] mouseHits; // 用于存储所有碰撞结果
 
-            if (Physics.Raycast(mouseRay, out mouseHit))
+            // 检测射线上所有碰撞体（按距离排序）
+            mouseHits = Physics.RaycastAll(mouseRay);
+
+            // 遍历所有碰撞结果，找到第一个符合条件的方块
+            foreach (var mouseHit in mouseHits)
             {
-                if (mouseHit.transform.GetComponent<Walkable>() != null)
+                // 同时检查标签和是否有Walkable组件
+                if (mouseHit.transform.CompareTag("Player") &&  // 替换为你的目标标签
+                    mouseHit.transform.GetComponent<Walkable>() != null)
                 {
                     isSearching = true;
                     clickedCube = mouseHit.transform;
                     DOTween.Kill(gameObject.transform);
                     finalPath.Clear();
-                    FindPath();
+
+                    // 调用静态类方法寻路
+                    finalPath = PathfindingUtility.FindPath(currentCube, clickedCube);
 
                     blend = transform.position.y - clickedCube.position.y > 0 ? -1 : 1;
-
                     indicator.position = mouseHit.transform.GetComponent<Walkable>().GetWalkPoint();
-                    Sequence s = DOTween.Sequence();
-                    s.AppendCallback(() => indicator.GetComponentInChildren<ParticleSystem>().Play());
-                    s.Append(indicator.GetComponent<Renderer>().material.DOColor(Color.white, .1f));
-                    s.Append(indicator.GetComponent<Renderer>().material.DOColor(Color.black, .3f).SetDelay(.2f));
-                    s.Append(indicator.GetComponent<Renderer>().material.DOColor(Color.clear, .3f));
+                    PlayIndicatorAnimation();
 
+                    // 找到路径则移动
+                    if (finalPath.Count > 0)
+                    {
+                        FollowPath();
+                    }
+                    else
+                    {
+                        isSearching = false;
+                    }
+
+                    break; // 找到第一个符合条件的就退出循环
                 }
             }
         }
@@ -79,86 +94,14 @@ public class PlayerController : MonoBehaviour
         //Debug.Log(temp);
         Debug.DrawRay(currentCube.position, currentCube.up * 5f, Color.red); // 方块上方向
     }
-
-    void FindPath()
+    // 鼠标点击后点击处指示器动画
+    private void PlayIndicatorAnimation()
     {
-        List<Transform> nextCubes = new List<Transform>();//待探索的方块
-        List<Transform> pastCubes = new List<Transform>();//已探索的方块
-
-        foreach (WalkPath path in currentCube.GetComponent<Walkable>().possiblePaths)
-        {
-            if (path.active)
-            {
-                nextCubes.Add(path.target);
-                //Debug.Log("下一个的" + path.target);
-                path.target.GetComponent<Walkable>().previousBlock = currentCube;
-            }
-        }
-        //Debug.Log("过去的" + currentCube);
-        pastCubes.Add(currentCube);
-        if (nextCubes.Count > 0)
-        {
-            ExploreCube(nextCubes, pastCubes);
-            BuildPath(pastCubes);
-        }
-        
-    }
-    //用的广搜，同时找所有可能的路径，最先找到的那条路径成功返回，否则遍历所有路径再返回
-    void ExploreCube(List<Transform> nextCubes, List<Transform> visitedCubes)
-    {
-        Transform current = nextCubes.First();
-        nextCubes.Remove(current);
-
-        if (current == clickedCube)
-        {
-            findPath = true;
-            return;
-        }
-
-        foreach (WalkPath path in current.GetComponent<Walkable>().possiblePaths)
-        {
-            if (!visitedCubes.Contains(path.target) && path.active)
-            {
-                nextCubes.Add(path.target);
-                path.target.GetComponent<Walkable>().previousBlock = current;
-            }
-        }
-
-        visitedCubes.Add(current);
-
-        if (nextCubes.Any())
-        {
-            ExploreCube(nextCubes, visitedCubes);
-        }
-    }
-
-    void BuildPath(List<Transform> visitedCubes)
-    {
-        float minDistance = float.MaxValue;
-        Transform nearestCube = null;
-        Transform cube = null;
-        foreach (Transform singleCube in visitedCubes)
-        {
-            float distance = Vector3.Distance(singleCube.position, clickedCube.position);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                 nearestCube = singleCube;
-            }
-        }
-        cube = findPath?clickedCube:nearestCube;
-        while (cube != currentCube)
-        {
-            finalPath.Add(cube);
-            if (cube.GetComponent<Walkable>().previousBlock != null)
-                cube = cube.GetComponent<Walkable>().previousBlock;
-            else
-                return;
-        }
-        cube = findPath ? clickedCube : nearestCube;
-        //finalPath.Insert(0, cube);
-        
-        FollowPath();
+        Sequence s = DOTween.Sequence();
+        s.AppendCallback(() => indicator.GetComponentInChildren<ParticleSystem>().Play());
+        s.Append(indicator.GetComponent<Renderer>().material.DOColor(Color.white, 0.1f));
+        s.Append(indicator.GetComponent<Renderer>().material.DOColor(Color.black, 0.3f).SetDelay(0.2f));
+        s.Append(indicator.GetComponent<Renderer>().material.DOColor(Color.clear, 0.3f));
     }
 
     void FollowPath()
@@ -171,14 +114,7 @@ public class PlayerController : MonoBehaviour
         {
             float time = finalPath[i].GetComponent<Walkable>().isStair ? 1.5f : 1;
 
-            s.Append(transform.DOMove(finalPath[i].GetComponent<Walkable>().GetWalkPoint(), time*0.2f).SetEase(Ease.Linear)).OnUpdate(() =>
-            {
-                if (finalPath == null || i < 0 || i >= finalPath.Count)
-                {
-                    return; // 安全退出
-                }
-                transform.up = finalPath[i].up;
-            });
+            s.Append(transform.DOMove(finalPath[i].GetComponent<Walkable>().GetWalkPoint(), time * 0.2f).SetEase(Ease.Linear));
 
             if (!finalPath[i].GetComponent<Walkable>().dontRotate)
             {
@@ -211,9 +147,6 @@ public class PlayerController : MonoBehaviour
                         //Debug.Log($"最终方向向量 = {dir}");
 
                     }
-                    
-                    temp = dir;
-                    Debug.DrawRay(transform.position, temp * 5f, Color.yellow); // 角色上方向
                     Quaternion targetRot = Quaternion.LookRotation(dir, finalPath[i].up);
 
                     // 然后平滑过渡到它（局部旋转）
@@ -226,7 +159,7 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (clickedCube.GetComponent<Walkable>().isButton)
+        if (finalPath[0].GetComponent<Walkable>().isButton)
         {
             s.AppendCallback(()=>GameManager.instance.RotateRightPivot());
         }
@@ -236,42 +169,59 @@ public class PlayerController : MonoBehaviour
 
     void Clear()
     {
-        isSearching = false; // 寻路结束解锁
-        foreach (Transform t in finalPath)
-        {
-            t.GetComponent<Walkable>().previousBlock = null;
-        }
+        isSearching = false; // 寻路结束解锁       
         finalPath.Clear();
         walking = false;
-        findPath = false;
     }
 
 
-    //从玩家向下发射射线用于获取当前玩家脚下方块的transform
-    public void RayCastDown()
+    public void UpdateCurrentCube()
     {
-
-        Ray playerRay = new Ray(transform.GetChild(0).position, -transform.up);
-        RaycastHit playerHit;
-
-        if (Physics.Raycast(playerRay, out playerHit))
+        //Debug.Log("在调用玩家检测");
+        Transform hitCube = RayCastDown(transform, "Player");
+        if (hitCube != null)
         {
-            if (playerHit.transform.GetComponent<Walkable>() != null)
-            {
-                currentCube = playerHit.transform;
+            currentCube = hitCube;
 
-                if (playerHit.transform.GetComponent<Walkable>().isStair)
-                {
-                    DOVirtual.Float(GetBlend(), blend, 10.0f, SetBlend);//在0.1s内过渡到blend
-                }
-                else
-                {
-                    DOVirtual.Float(GetBlend(), 0, .1f, SetBlend);
-                }//进出楼梯动画控制数的切换
+            if (currentCube.GetComponent<Walkable>().isStair)
+            {
+                DOVirtual.Float(GetBlend(), blend, 10.0f, SetBlend);
+            }
+            else
+            {
+                DOVirtual.Float(GetBlend(), 0, 0.1f, SetBlend);
             }
         }
+        else
+        {
+            Debug.Log("玩家脚下的方块为空");
+        }
     }
+    //检测角色脚下的方块
+    private Transform RayCastDown(Transform player, string targetTag, float rayLength = 10f)
+    {
+        Ray playerRay = new Ray(player.GetChild(0).position, -player.up);
+        RaycastHit[] hits;
 
+        // 检测所有碰撞体（按距离排序）
+        hits = Physics.RaycastAll(playerRay, rayLength);
+
+        // 遍历所有碰撞结果，找到第一个符合标签的方块
+        foreach (var hit in hits)
+        {
+            string hitInfo = $"{player}的[RayCastDown] 检测到对象: {hit.transform.name}";
+            hitInfo += $", 标签: {hit.transform.tag}";
+            hitInfo += $", 距离: {hit.distance:F2}";
+            //Debug.Log(hitInfo);
+            if (hit.transform.CompareTag(targetTag) &&
+                hit.transform.GetComponent<Walkable>() != null)
+            {
+                return hit.transform;
+            }
+        }
+
+        return null;
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;

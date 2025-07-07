@@ -334,7 +334,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2867353667967072589}
   - component: {fileID: 5692478795481119140}
-  - component: {fileID: 51114633981428855}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -376,20 +375,6 @@ MonoBehaviour:
   clickedCube: {fileID: 0}
   indicator: {fileID: 0}
   finalPath: []
---- !u!114 &51114633981428855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7865381896218773040}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0473b5a8831b14d46bfd5431bf590f16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 4694425305746165915}
-  player: {fileID: 5692478795481119140}
 --- !u!1001 &2324833198626752713
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -680,12 +665,6 @@ PrefabInstance:
 --- !u!4 &3436230229898460641 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1147439658223842600, guid: d8225b0c5eb40ad4184bb9f0a42772c3,
-    type: 3}
-  m_PrefabInstance: {fileID: 2324833198626752713}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &4694425305746165915 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 7018443903560063058, guid: d8225b0c5eb40ad4184bb9f0a42772c3,
     type: 3}
   m_PrefabInstance: {fileID: 2324833198626752713}
   m_PrefabAsset: {fileID: 0}

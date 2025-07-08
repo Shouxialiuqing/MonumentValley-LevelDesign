@@ -11,7 +11,7 @@ public class EnemyController : MonoBehaviour
     public Transform player;           // 玩家引用
     public Transform parent;//所在道路的父物体
 
-    public float attackRange = 1f;     // 攻击距离阈值
+    public float attackRange = 1.5f;     // 攻击距离阈值
     
     private int currentPatrolIndex = 0; // 当前巡逻点索引
     private bool isPatrolling = false;   // 是否正在巡逻
@@ -51,7 +51,7 @@ public class EnemyController : MonoBehaviour
     {
         // 每帧更新当前方块
         UpdateCurrentCube();
-
+        
         // 检查与玩家的距离
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
@@ -169,9 +169,13 @@ public class EnemyController : MonoBehaviour
             float time = path[i].GetComponent<Walkable>().isStair ? 1.5f : 1;
 
             //s.Append(transform.DOMove(path[i].GetComponent<Walkable>().GetWalkPoint(), time * 2f).SetEase(Ease.Linear));
+            parent = currentCube.parent;
+            transform.parent = parent;
             Vector3 targetLocalPos = parent.InverseTransformPoint(path[i].GetComponent<Walkable>().GetWalkPoint());
             s.Append(transform.DOLocalMove(targetLocalPos, time * .8f).SetEase(Ease.Linear).SetRelative(false)).OnUpdate(() =>
             {
+                if (path == null || i < 0 || i >= path.Count) return;
+
                 if (!path[i].GetComponent<Walkable>().dontRotate)
                 {
 

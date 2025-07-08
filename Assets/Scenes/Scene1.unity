@@ -3310,7 +3310,7 @@ GameObject:
   - component: {fileID: 61392971}
   m_Layer: 8
   m_Name: 14
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5886,7 +5886,7 @@ GameObject:
   - component: {fileID: 96511115}
   m_Layer: 0
   m_Name: 1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11322,6 +11322,10 @@ MonoBehaviour:
       index: 1
     - block: {fileID: 459629129}
       index: 1
+    - block: {fileID: 459629129}
+      index: 1
+    - block: {fileID: 459629129}
+      index: 1
   - pathConditionName: Final Connection
     conditions:
     - conditionObject: {fileID: 748259335}
@@ -11331,37 +11335,27 @@ MonoBehaviour:
       index: 2
     - block: {fileID: 1718603970}
       index: 0
-  - pathConditionName: Extra Connection
-    conditions:
-    - conditionObject: {fileID: 841462477}
-      eulerAngle: {x: 0, y: 0, z: 90}
-    paths:
-    - block: {fileID: 1906993000}
-      index: 0
-    - block: {fileID: 1935361021}
-      index: 1
-  - pathConditionName: Extra Connection
-    conditions:
-    - conditionObject: {fileID: 841462477}
-      eulerAngle: {x: 0, y: 0, z: 90}
-    paths:
-    - block: {fileID: 1906993000}
-      index: 1
-    - block: {fileID: 1188568828}
-      index: 0
+  heightConditions: []
   pivots:
-  - pivotTransform: {fileID: 748259335}
-    rotationAxis: {x: 0, y: 1, z: 0}
-    rotationAngle: 90
-    rotationDuration: 0.6
-    rotationEase: 27
-    isButtonControl: 0
   - pivotTransform: {fileID: 841462477}
     rotationAxis: {x: 1, y: 0, z: 0}
     rotationAngle: 90
     rotationDuration: 0.6
-    rotationEase: 27
-    isButtonControl: 1
+    dontRotate: 1
+  - pivotTransform: {fileID: 748259335}
+    rotationAxis: {x: 0, y: 1, z: 0}
+    rotationAngle: 90
+    rotationDuration: 0.6
+    dontRotate: 0
+  pivotIndex: 0
+  rotationVector: {x: 0, y: 0, z: 90}
+  rotateDuration: 0.6
+  rotateEase: 27
+  heightPivotIndex: -1
+  heightStep: 0.5
+  heightDuration: 0.3
+  maxHeight: 5
+  minHeight: 0
   objectsToHide:
   - {fileID: 1762484645}
   - {fileID: 1051174809}
@@ -11395,7 +11389,7 @@ GameObject:
   - component: {fileID: 153007724}
   m_Layer: 8
   m_Name: l_3
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32016,7 +32010,7 @@ GameObject:
   - component: {fileID: 459629129}
   m_Layer: 0
   m_Name: u_1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36669,7 +36663,7 @@ GameObject:
   - component: {fileID: 549514383}
   m_Layer: 8
   m_Name: 13
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44033,7 +44027,7 @@ GameObject:
   - component: {fileID: 675634744}
   m_Layer: 8
   m_Name: p2
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46052,7 +46046,7 @@ GameObject:
   - component: {fileID: 699715142}
   m_Layer: 0
   m_Name: 5stair
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48382,7 +48376,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 5.17e-43, y: 1.74e-43, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 9.78e-43, y: 7.1e-44, z: 0, w: -2.618731e-38}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -57415,7 +57409,7 @@ GameObject:
   - component: {fileID: 775415259}
   m_Layer: 0
   m_Name: 11stair
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -61942,7 +61936,7 @@ GameObject:
   - component: {fileID: 818239853}
   m_Layer: 0
   m_Name: u_2
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -62653,7 +62647,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 841462476}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 6, z: 7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -78021,7 +78015,7 @@ GameObject:
   - component: {fileID: 980609066}
   m_Layer: 8
   m_Name: 17button
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -80684,7 +80678,7 @@ GameObject:
   - component: {fileID: 1011665407}
   m_Layer: 8
   m_Name: p3
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82335,7 +82329,7 @@ GameObject:
   - component: {fileID: 1025421134}
   m_Layer: 0
   m_Name: 0
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -83505,7 +83499,7 @@ GameObject:
   - component: {fileID: 1051174810}
   m_Layer: 8
   m_Name: Plane (1)
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -84130,7 +84124,7 @@ GameObject:
   - component: {fileID: 1070211212}
   m_Layer: 8
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -90441,7 +90435,7 @@ GameObject:
   - component: {fileID: 1188568828}
   m_Layer: 8
   m_Name: p1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -90764,7 +90758,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   possiblePaths:
   - target: {fileID: 1906992999}
-    active: 0
+    active: 1
   - target: {fileID: 675634739}
     active: 1
   previousBlock: {fileID: 0}
@@ -100386,7 +100380,7 @@ GameObject:
   - component: {fileID: 1394538695}
   m_Layer: 0
   m_Name: 3
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103010,7 +103004,7 @@ GameObject:
   - component: {fileID: 1430322266}
   m_Layer: 0
   m_Name: 4
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106166,7 +106160,7 @@ GameObject:
   - component: {fileID: 1467260660}
   m_Layer: 0
   m_Name: 2
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113763,7 +113757,7 @@ GameObject:
   - component: {fileID: 1594381515}
   m_Layer: 0
   m_Name: u_3
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113918,7 +113912,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -118715,7 +118708,7 @@ Transform:
   m_GameObject: {fileID: 1594757426}
   serializedVersion: 2
   m_LocalRotation: {x: -0.6542689, y: 0.26820186, z: 0.26820186, w: 0.6542689}
-  m_LocalPosition: {x: 68.840225, y: 51.01366, z: -78.30295}
+  m_LocalPosition: {x: 72.58022, y: 51.01366, z: -81.995445}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -119391,7 +119384,7 @@ GameObject:
   - component: {fileID: 1612816930}
   m_Layer: 0
   m_Name: 6stair
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121276,7 +121269,7 @@ GameObject:
   - component: {fileID: 1614690205}
   m_Layer: 0
   m_Name: u_4
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -122921,7 +122914,7 @@ GameObject:
   - component: {fileID: 1669377234}
   m_Layer: 0
   m_Name: 10stair
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -126692,7 +126685,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -131510,7 +131502,7 @@ GameObject:
   - component: {fileID: 1718603970}
   m_Layer: 0
   m_Name: 18final
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134961,7 +134953,7 @@ GameObject:
   - component: {fileID: 1777825433}
   m_Layer: 0
   m_Name: 8stair
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -137902,7 +137894,7 @@ GameObject:
   - component: {fileID: 1785654128}
   m_Layer: 0
   m_Name: 7stair
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -141759,7 +141751,7 @@ GameObject:
   - component: {fileID: 1840787682}
   m_Layer: 0
   m_Name: 9
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -145818,7 +145810,7 @@ GameObject:
   - component: {fileID: 1906993000}
   m_Layer: 8
   m_Name: 16
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146141,9 +146133,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   possiblePaths:
   - target: {fileID: 1935361020}
-    active: 0
+    active: 1
   - target: {fileID: 1188568823}
-    active: 0
+    active: 1
   previousBlock: {fileID: 0}
   isStair: 0
   movingGround: 0
@@ -147442,7 +147434,7 @@ GameObject:
   - component: {fileID: 1935361021}
   m_Layer: 8
   m_Name: 15
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147767,7 +147759,7 @@ MonoBehaviour:
   - target: {fileID: 61392970}
     active: 1
   - target: {fileID: 1906992999}
-    active: 0
+    active: 1
   previousBlock: {fileID: 0}
   isStair: 0
   movingGround: 0
@@ -152433,7 +152425,7 @@ GameObject:
   - component: {fileID: 2029831293}
   m_Layer: 0
   m_Name: 12
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -159086,6 +159078,11 @@ PrefabInstance:
       propertyPath: indicator
       value: 
       objectReference: {fileID: 61062075}
+    - target: {fileID: 5692478795481119140, guid: d49017b866a018c4995359e3ea6e6c6d,
+        type: 3}
+      propertyPath: currentCube
+      value: 
+      objectReference: {fileID: 96511114}
     - target: {fileID: 7865381896218773040, guid: d49017b866a018c4995359e3ea6e6c6d,
         type: 3}
       propertyPath: m_Name
@@ -163990,7 +163987,7 @@ GameObject:
   - component: {fileID: 476676045731963587}
   m_Layer: 8
   m_Name: l_1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -164166,7 +164163,7 @@ GameObject:
   - component: {fileID: 476676045768374340}
   m_Layer: 8
   m_Name: l_2
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -164778,7 +164775,7 @@ GameObject:
   - component: {fileID: 4405422075861759860}
   m_Layer: 8
   m_Name: Cube.001
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

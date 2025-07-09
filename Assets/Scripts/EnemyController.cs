@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 
+
 [SelectionBase]
 public class EnemyController : MonoBehaviour
 {
+    public static EnemyController instance;
+
     public Transform currentCube;      // 当前所在方块
     public Transform[] patrolPoints;   // 巡逻点数组（两个方块）
     public Transform player;           // 玩家引用
@@ -16,7 +19,7 @@ public class EnemyController : MonoBehaviour
     private int currentPatrolIndex = 0; // 当前巡逻点索引
     private bool isPatrolling = false;   // 是否正在巡逻
     private bool isAttacking = false;    // 是否正在攻击
-    private List<Transform> path = new List<Transform>(); // 当前路径
+    public List<Transform> path = new List<Transform>(); // 当前路径
     private Coroutine moveCoroutine;     // 移动协程引用，用于停止协程
     Vector3 temp = Vector3.zero;
     Vector3 dir = Vector3.zero;
@@ -27,8 +30,14 @@ public class EnemyController : MonoBehaviour
     public float sphereRadius = 0.3f;
     public Color gizmoColor = Color.yellow;
 
+    public bool isReady = true;
+    private void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
+        if (!isReady) return;
         // 初始化巡逻点和当前位置
         if (patrolPoints.Length != 2)
         {
@@ -49,9 +58,10 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
+        
         // 每帧更新当前方块
         UpdateCurrentCube();
-        
+        if (!isReady) return;
         // 检查与玩家的距离
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
@@ -67,11 +77,7 @@ public class EnemyController : MonoBehaviour
             StartPatrol();
         }
 
-        // 如果正在巡逻且路径为空，尝试寻找新路径
-        if (isPatrolling && path.Count == 0 && moveCoroutine == null)
-        {
-            FindNewPath();
-        }
+        
         //Debug.DrawRay(transform.position, transform.up * 5f, Color.green); // 角色上方向
         Debug.DrawRay(transform.position, temp * 5f, Color.yellow); // 角色上方向
         //Debug.Log(gameObject+" "+temp);
@@ -79,8 +85,9 @@ public class EnemyController : MonoBehaviour
     }
 
     // 开始巡逻
-    private void StartPatrol()
+    public void StartPatrol()
     {
+        Debug.Log("开始寻路");
         isPatrolling = true;
         isAttacking = false;
         GetComponentInChildren<Animator>().SetBool("IsWalking", true);
@@ -89,20 +96,20 @@ public class EnemyController : MonoBehaviour
     }
 
     // 停止巡逻
-    private void StopPatrol()
+    public void StopPatrol()
     {
         isPatrolling = false;
 
         // 停止移动协程
         if (moveCoroutine != null)
         {
-            StopCoroutine(moveCoroutine);
+            StopCoroutine(MoveAlongPathCoroutine());
             moveCoroutine = null;
         }
-
         // 清理路径和动画
         path.Clear();
-        DOTween.Kill(transform);
+        //DOTween.Kill(transform.gameObject);
+        
     }
 
     // 开始攻击
@@ -118,12 +125,13 @@ public class EnemyController : MonoBehaviour
     private void StopAttack()
     {
         DOTween.Kill(transform);
+        transform.DOKill();
         isAttacking = false;
         GetComponentInChildren<Animator>().SetBool("IsAttacking", false);
     }
 
     // 寻找新路径
-    private void FindNewPath()
+    public void FindNewPath()
     {
         Transform targetPoint = patrolPoints[currentPatrolIndex];
         path = PathfindingUtility.FindPath(currentCube, targetPoint);
@@ -162,20 +170,21 @@ public class EnemyController : MonoBehaviour
                 yield break;
 
             // 安全检查：确保路径和索引有效
-            if (path == null || i < 0 || i >= path.Count)
+            if (path.Count == 0 || i < 0 || i >= path.Count)
                 yield break;
             Sequence s = DOTween.Sequence();
 
             float time = path[i].GetComponent<Walkable>().isStair ? 1.5f : 1;
 
             //s.Append(transform.DOMove(path[i].GetComponent<Walkable>().GetWalkPoint(), time * 2f).SetEase(Ease.Linear));
+            UpdateCurrentCube();
             parent = currentCube.parent;
             transform.parent = parent;
             Vector3 targetLocalPos = parent.InverseTransformPoint(path[i].GetComponent<Walkable>().GetWalkPoint());
             s.Append(transform.DOLocalMove(targetLocalPos, time * .8f).SetEase(Ease.Linear).SetRelative(false)).OnUpdate(() =>
             {
-                if (path == null || i < 0 || i >= path.Count) return;
-
+                if (path==null|| i < 0 || i >= path.Count) return;
+                //Debug.Log(transform+" "+path.Count);
                 if (!path[i].GetComponent<Walkable>().dontRotate)
                 {
 
@@ -239,7 +248,7 @@ public class EnemyController : MonoBehaviour
     }
     
     // 更新当前方块
-    private void UpdateCurrentCube()
+    public void UpdateCurrentCube()
     {
         //Debug.Log("在调用敌人检测");
         Transform hitCube = RayCastDown(transform);
@@ -253,7 +262,7 @@ public class EnemyController : MonoBehaviour
         }
     }
    
-    // 射线检测方法（带Gizmo可视化）
+    // 射线检测方法
     public Transform RayCastDown(Transform player)
     {
         if (player == null) return null;
@@ -278,28 +287,28 @@ public class EnemyController : MonoBehaviour
         return null;
     }
 
-    //// 在Scene视图绘制Gizmo
-    //private void OnDrawGizmos()
-    //{
-    //    // 绘制射线起点和球形范围
-    //    if (transform == null) return;
+    // 在Scene视图绘制Gizmo
+    private void OnDrawGizmos()
+    {
+        // 绘制射线起点和球形范围
+        if (transform == null) return;
 
-    //    Vector3 origin = transform.GetChild(0) != null ?
-    //        transform.GetChild(0).position : transform.position;
-    //    Vector3 direction = -transform.up;
+        Vector3 origin = transform.GetChild(0) != null ?
+            transform.GetChild(0).position : transform.position;
+        Vector3 direction = -transform.up;
 
-    //    // 设置Gizmo颜色
-    //    Gizmos.color = gizmoColor;
+        // 设置Gizmo颜色
+        Gizmos.color = gizmoColor;
 
-    //    // 绘制球形起点（可视化射线半径）
-    //    Gizmos.DrawWireSphere(origin, sphereRadius);
+        // 绘制球形起点（可视化射线半径）
+        Gizmos.DrawWireSphere(origin, sphereRadius);
 
-    //    // 绘制射线方向（长度为rayLength）
-    //    Vector3 endPoint = origin + direction * rayLength;
-    //    Gizmos.DrawLine(origin, endPoint);
+        // 绘制射线方向（长度为rayLength）
+        Vector3 endPoint = origin + direction * rayLength;
+        Gizmos.DrawLine(origin, endPoint);
 
-    //    // 绘制射线末端的球形范围（表示射线终点的检测范围）
-    //    Gizmos.DrawWireSphere(endPoint, sphereRadius);
-    //}
+        // 绘制射线末端的球形范围（表示射线终点的检测范围）
+        Gizmos.DrawWireSphere(endPoint, sphereRadius);
+    }
 
 }

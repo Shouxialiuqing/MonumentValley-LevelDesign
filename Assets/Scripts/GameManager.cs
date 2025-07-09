@@ -7,8 +7,15 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-
+    public EnemyController targetEnemy;
     public PlayerController player;
+    private Coroutine delayCoroutine=null;
+    [Space]
+    [Header("场景过渡设置")]
+    [Tooltip("场景淡入淡出控制器")]
+    public ScreenFader screenFader;
+    [Tooltip("下一个场景的索引")]
+    public int nextSceneIndex = -1;
 
     [Space]
     [Header("按键输入的响应设置")]
@@ -19,7 +26,7 @@ public class GameManager : MonoBehaviour
     public List<HeightCondition> heightConditions = new List<HeightCondition>();
 
     [Tooltip("每次输入按键时旋转轴的变化情况")]
-    public List<PivotData> pivots = new List<PivotData>();//旋转轴心类
+    public List<PivotData> pivots = new List<PivotData>();//旋转轴心类数组
 
 
     [Space]
@@ -28,12 +35,11 @@ public class GameManager : MonoBehaviour
     public int pivotIndex = 0;  // 可在编辑器中设置的pivot索引
     [Tooltip("按钮按下后旋转到的目标向量（局部坐标系）")]
     public Vector3 rotationVector = new Vector3(0, 0, 90);  // 直接设置旋转向量
-
     [Tooltip("旋转动画持续时间（秒）")]
     public float rotateDuration = 0.6f;  // 动画时长
-
     [Tooltip("动画缓动类型")]
     public Ease rotateEase = Ease.OutBack;  // 缓动效果
+
     [Space]
     [Header("高度控制设置")]
     [Tooltip("控制高度的Pivot索引")]
@@ -54,7 +60,30 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
     }
+    private void OnEnable()
+    {
+        // 订阅事件
+        EventManager.OnSceneTransitionTriggered += TransitionToNextScene;
+    }
 
+    private void OnDisable()
+    {
+        // 取消订阅事件
+        EventManager.OnSceneTransitionTriggered -= TransitionToNextScene;
+    }
+
+    private void Start()
+    {
+        StartCoroutine(SceneStartFadeIn());
+    }
+    private IEnumerator SceneStartFadeIn()
+    {
+        if (screenFader != null)
+        {
+            StartCoroutine(screenFader.FadeIn(1f));
+            yield return new WaitForSeconds(1f);
+        }
+    }
     void Update()
     {
         foreach(PathCondition pc in pathConditions)
@@ -102,6 +131,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
+            AudioManager.Instance.PlayOneShot("Rotate");
             int multiplier = Input.GetKey(KeyCode.RightArrow) ? 1 : -1;
 
             foreach (PivotData pivot in pivots)
@@ -122,8 +152,9 @@ public class GameManager : MonoBehaviour
         // 上下键高度控制
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
         {
+            AudioManager.Instance.PlayOneShot("Rotate");
             // 安全检查
-            if (!(pivots == null || pivots.Count <= heightPivotIndex || pivots[heightPivotIndex].pivotTransform == null))
+            if (!(pivots == null || pivots.Count <= heightPivotIndex))
             {
                 var targetPivot = pivots[heightPivotIndex].pivotTransform;
                 float currentY = targetPivot.position.y;
@@ -146,13 +177,16 @@ public class GameManager : MonoBehaviour
                     );
                     targetPivot.DOMove(targetPos, heightDuration).SetEase(Ease.OutQuad);
                     PlayerController.instance.UpdateCurrentCube();
+                    //敌人重新寻路
+                   if(targetEnemy!=null&&delayCoroutine==null)  delayCoroutine=StartCoroutine(DelayedRestartPatrol());
                 }
             }
         }
+           
         foreach (Transform t in objectsToHide)
-           {
+        {
             t.gameObject.SetActive(pivots[1].pivotTransform.eulerAngles.y > 45 && pivots[1].pivotTransform.eulerAngles.y < 90 + 45);
-           }
+        }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -160,13 +194,24 @@ public class GameManager : MonoBehaviour
         }//r键重新加载场景
 
     }
+    private IEnumerator DelayedRestartPatrol()
+    {
+        targetEnemy.StopPatrol();
+        Debug.Log("停止寻路");
+        
+        // 3. 等待0.5秒
+        yield return new WaitForSeconds(.8f);
+        Debug.Log("等完了.6s");
+        targetEnemy.StartPatrol();
+        delayCoroutine = null;
+    }
 
     //public void RotateRightPivot()
     //{
     //    pivots[0].pivotTransform.DOComplete();//快速完成当前未完成的动画
     //    pivots[0].pivotTransform.DORotate(new Vector3(0, 0, 90), .6f).SetEase(Ease.OutBack);//0.6秒内带回弹效果的动画选择
     //}
-   
+
     public void RotatePivot()
     {
         // 安全检查
@@ -181,6 +226,41 @@ public class GameManager : MonoBehaviour
         targetPivot.DOComplete();
         targetPivot.DORotate(rotationVector, rotateDuration)
                    .SetEase(rotateEase);
+    }
+    
+    public void TransitionToNextScene()
+    {
+        nextSceneIndex = SceneManager.GetActiveScene().buildIndex+1;
+        StartCoroutine(FadeOutAndLoadScene(nextSceneIndex));      
+    }
+
+    private IEnumerator FadeOutAndLoadScene(int sceneIndex)
+    {
+        if (screenFader != null)
+        {
+            StartCoroutine(screenFader.FadeOut(1f));
+            yield return new WaitForSeconds(1.5f);
+        }
+        if (sceneIndex < 3)
+        {
+            AsyncOperation asyncOp = SceneManager.LoadSceneAsync(sceneIndex);
+            asyncOp.allowSceneActivation = false;
+
+            // 等待加载进度达到90%
+            while (asyncOp.progress < 0.9f)
+            {
+                yield return null;
+            }
+
+            asyncOp.allowSceneActivation = true;
+
+            // 等待场景完全激活
+            while (!asyncOp.isDone)
+            {
+                yield return null;
+            }
+        }
+        else Application.Quit();//游戏结束
     }
 
 }

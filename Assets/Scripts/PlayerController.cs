@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 [SelectionBase]
 public class PlayerController : MonoBehaviour
 {
+
     public static PlayerController instance;
     public bool walking = false;//是否正在行走 控制待机与走路动画的切换
     private bool isSearching = false;//是否正在寻路
@@ -38,6 +39,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+
         UpdateCurrentCube();
         //获取玩家当前所在的方块
         GetComponentInChildren<Animator>().SetBool("walking", walking);
@@ -69,6 +71,7 @@ public class PlayerController : MonoBehaviour
                 if (mouseHit.transform.CompareTag("Player") &&  
                     mouseHit.transform.GetComponent<Walkable>() != null)
                 {
+                    AudioManager.Instance.PlayOneShot("Click");
                     lastClickPosition = mouseHit.point; // 记录点击位置
                     if (!IsClickInFrontWithEnemy(lastClickPosition))
                     {
@@ -165,7 +168,7 @@ public class PlayerController : MonoBehaviour
         Sequence s = DOTween.Sequence();
 
         walking = true;
-
+        AudioManager.Instance.PlayLooping("Run");
         for (int i = finalPath.Count - 1; i >= 0; i--)
         {
             // 如果检测到敌人需要停止移动，则终止移动
@@ -225,10 +228,21 @@ public class PlayerController : MonoBehaviour
 
         if (finalPath[0].GetComponent<Walkable>().isButton)
         {
-            s.AppendCallback(()=>GameManager.instance.RotatePivot());
+            s.AppendCallback(()=>
+            {
+                GameManager.instance.RotatePivot();
+                AudioManager.Instance.PlayOneShot("Button");
+            });
         }
-
-        s.AppendCallback(() => Clear());
+        if (finalPath[0].GetComponent<Walkable>().isEnd)
+        {
+            s.AppendCallback(() =>EventManager.TriggerSceneTransition());
+        }
+        s.AppendCallback(() => {
+            if (AudioManager.Instance.IsLooping("Run"))
+                AudioManager.Instance.StopLooping("Run");
+            Clear();
+        });
     }
 
     void Clear()

@@ -3638,6 +3638,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -6214,6 +6215,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -11282,7 +11284,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6bcfb9f957889c458b68fddd59f3d44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetEnemy: {fileID: 0}
   player: {fileID: 518249428}
+  screenFader: {fileID: 1147458292}
+  nextSceneIndex: -1
   pathConditions:
   - pathConditionName: Left Connection
     conditions:
@@ -11497,6 +11502,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 1
   isButton: 0
   dontRotate: 0
@@ -12352,6 +12358,7 @@ MonoBehaviour:
     active: 0
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -32124,6 +32131,7 @@ MonoBehaviour:
     active: 0
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 1
   isButton: 0
   dontRotate: 1
@@ -32166,6 +32174,7 @@ MonoBehaviour:
     active: 0
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -36991,6 +37000,7 @@ MonoBehaviour:
     active: 0
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -44355,6 +44365,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -47911,6 +47922,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 1
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -48376,7 +48388,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 9.78e-43, y: 7.1e-44, z: 0, w: -2.618731e-38}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: -1.5197189e+30}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -59274,6 +59286,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 1
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -62046,6 +62059,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 1
   isButton: 0
   dontRotate: 0
@@ -78342,6 +78356,7 @@ MonoBehaviour:
     active: 0
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 0
   isButton: 1
   dontRotate: 0
@@ -81006,6 +81021,7 @@ MonoBehaviour:
     active: 0
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 1
@@ -82655,6 +82671,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -87584,6 +87601,95 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1147009812}
   m_Mesh: {fileID: 988981209}
+--- !u!1 &1147458290
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1147458291}
+  - component: {fileID: 1147458294}
+  - component: {fileID: 1147458293}
+  - component: {fileID: 1147458292}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1147458291
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147458290}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1317671663}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1147458292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147458290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eef2557cfdeda34ca552be40a801dcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeImage: {fileID: 1147458293}
+--- !u!114 &1147458293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147458290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1147458294
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147458290}
+  m_CullTransparentMesh: 1
 --- !u!1 &1150843397
 GameObject:
   m_ObjectHideFlags: 0
@@ -90763,6 +90869,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -96512,6 +96619,50 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310649361}
   m_Mesh: {fileID: 650717973}
+--- !u!1 &1310897889
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1310897891}
+  - component: {fileID: 1310897890}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1310897890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310897889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4662f03970313474d8aae8888b9e7f5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1310897891
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310897889}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.73061156, y: 2.4774594, z: -3.4693317}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1311043513
 GameObject:
   m_ObjectHideFlags: 0
@@ -97160,6 +97311,108 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1313829517}
   m_Mesh: {fileID: 1053193203}
+--- !u!1 &1317671659
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1317671663}
+  - component: {fileID: 1317671662}
+  - component: {fileID: 1317671661}
+  - component: {fileID: 1317671660}
+  m_Layer: 5
+  m_Name: Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1317671660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317671659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &1317671661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317671659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0.5
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!223 &1317671662
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317671659}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!224 &1317671663
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317671659}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1147458291}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!1 &1318959627
 GameObject:
   m_ObjectHideFlags: 0
@@ -100708,6 +100961,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -103332,6 +103586,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -106488,6 +106743,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -113867,6 +114123,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 1
   isButton: 0
   dontRotate: 0
@@ -121249,6 +121506,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 1
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -121377,6 +121635,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 1
   isButton: 0
   dontRotate: 0
@@ -124779,6 +125038,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 1
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -131526,8 +131786,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.9295979, z: 1}
+  m_Center: {x: 0, y: 0.46479893, z: 0}
 --- !u!23 &1718603967
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -131610,6 +131870,7 @@ MonoBehaviour:
     active: 0
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 1
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -136818,6 +137079,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 1
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -139759,6 +140021,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 1
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -142079,6 +142342,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -146138,6 +146402,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -147762,6 +148027,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -152753,6 +153019,7 @@ MonoBehaviour:
     active: 0
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 0
   isButton: 0
   dontRotate: 0
@@ -159023,6 +159290,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 639271524}
+    - target: {fileID: 2300448776994097444, guid: d49017b866a018c4995359e3ea6e6c6d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2867353667967072589, guid: d49017b866a018c4995359e3ea6e6c6d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -159088,7 +159360,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6919972142601724813, guid: d49017b866a018c4995359e3ea6e6c6d, type: 3}
+    - {fileID: 2300448776994097444, guid: d49017b866a018c4995359e3ea6e6c6d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -164015,6 +164289,7 @@ MonoBehaviour:
     active: 0
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 1
   isButton: 0
   dontRotate: 0
@@ -164187,6 +164462,7 @@ MonoBehaviour:
     active: 1
   previousBlock: {fileID: 0}
   isStair: 0
+  isEnd: 0
   movingGround: 1
   isButton: 0
   dontRotate: 0
@@ -164834,9 +165110,11 @@ SceneRoots:
   m_Roots:
   - {fileID: 150249150}
   - {fileID: 705507995}
+  - {fileID: 1310897891}
   - {fileID: 963194228}
   - {fileID: 403947933412439537}
   - {fileID: 21792612}
   - {fileID: 1356687873}
   - {fileID: 699895041}
   - {fileID: 819291632497999570}
+  - {fileID: 1317671663}

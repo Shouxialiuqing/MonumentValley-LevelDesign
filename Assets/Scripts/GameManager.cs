@@ -197,7 +197,7 @@ public class GameManager : MonoBehaviour
         {
             AudioManager.Instance.PlayOneShot("Rotate");
             // 安全检查
-            if (!(pivots == null || pivots.Count <= heightPivotIndex))
+            if (heightPivotIndex>0&&!(pivots == null || pivots.Count <= heightPivotIndex))
             {
                 var targetPivot = pivots[heightPivotIndex].pivotTransform;
                 float currentY = targetPivot.position.y;

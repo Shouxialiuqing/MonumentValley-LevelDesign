@@ -23,7 +23,7 @@ public class EnemyController : MonoBehaviour
     private Coroutine moveCoroutine;     // 移动协程引用，用于停止协程
     Vector3 temp = Vector3.zero;
     Vector3 dir = Vector3.zero;
-
+    public Animator anim;//感叹动画控制器
     // 射线参数
     public string targetTag = "Enemy";
     public float rayLength = 10f;
@@ -37,7 +37,7 @@ public class EnemyController : MonoBehaviour
     }
     void Start()
     {
-        if (!isReady) return;
+        anim.gameObject.SetActive(false);
         // 初始化巡逻点和当前位置
         if (patrolPoints.Length != 2)
         {
@@ -68,11 +68,15 @@ public class EnemyController : MonoBehaviour
         // 切换攻击/巡逻状态
         if (distanceToPlayer <= attackRange && !isAttacking)
         {
+            anim.gameObject.SetActive(true);
+            anim.SetTrigger("Sparking");
+            StartCoroutine(DeactivateAfterAnimation());
             StopPatrol();
             StartAttack();
         }
         else if (distanceToPlayer > attackRange && isAttacking)
         {
+            anim.gameObject.SetActive(false);
             StopAttack();
             StartPatrol();
         }
@@ -83,7 +87,11 @@ public class EnemyController : MonoBehaviour
         //Debug.Log(gameObject+" "+temp);
         //Debug.DrawRay(currentCube.position, currentCube.up * 5f, Color.red); // 方块上方向
     }
-
+    private IEnumerator DeactivateAfterAnimation()
+    {
+        yield return new WaitForSeconds(1.2f);
+        anim.gameObject.SetActive(false);
+    }
     // 开始巡逻
     public void StartPatrol()
     {

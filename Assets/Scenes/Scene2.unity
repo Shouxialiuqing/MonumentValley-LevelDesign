@@ -2979,19 +2979,12 @@ PrefabInstance:
       propertyPath: currentCube
       value: 
       objectReference: {fileID: 372006291}
-    - target: {fileID: 6919972142601724813, guid: d49017b866a018c4995359e3ea6e6c6d,
-        type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7865381896218773040, guid: d49017b866a018c4995359e3ea6e6c6d,
         type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6919972142601724813, guid: d49017b866a018c4995359e3ea6e6c6d, type: 3}
-    - {fileID: 2300448776994097444, guid: d49017b866a018c4995359e3ea6e6c6d, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

@@ -15,7 +15,8 @@ public class EnemyController : MonoBehaviour
     public Transform parent;//所在道路的父物体
 
     public float attackRange = 1.5f;     // 攻击距离阈值
-    
+
+    public Animator anim;
     private int currentPatrolIndex = 0; // 当前巡逻点索引
     private bool isPatrolling = false;   // 是否正在巡逻
     private bool isAttacking = false;    // 是否正在攻击
@@ -37,6 +38,7 @@ public class EnemyController : MonoBehaviour
     }
     void Start()
     {
+        anim.gameObject.SetActive(false);
         if (!isReady) return;
         // 初始化巡逻点和当前位置
         if (patrolPoints.Length != 2)
@@ -68,6 +70,9 @@ public class EnemyController : MonoBehaviour
         // 切换攻击/巡逻状态
         if (distanceToPlayer <= attackRange && !isAttacking)
         {
+            anim.gameObject.SetActive(true);
+            anim.SetTrigger("Sparking");
+            StartCoroutine(DeactivateAfterAnimation());
             StopPatrol();
             StartAttack();
         }
@@ -83,7 +88,11 @@ public class EnemyController : MonoBehaviour
         //Debug.Log(gameObject+" "+temp);
         //Debug.DrawRay(currentCube.position, currentCube.up * 5f, Color.red); // 方块上方向
     }
-
+    private IEnumerator DeactivateAfterAnimation()
+    {
+        yield return new WaitForSeconds(1f);
+        anim.gameObject.SetActive(false);
+    }
     // 开始巡逻
     public void StartPatrol()
     {

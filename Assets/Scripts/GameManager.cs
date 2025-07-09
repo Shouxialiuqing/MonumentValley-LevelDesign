@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public EnemyController targetEnemy;
     public PlayerController player;
-    private Coroutine delayCoroutine=null;
+    private Coroutine delayCoroutine = null;
     [Space]
     [Header("场景过渡设置")]
     [Tooltip("场景淡入淡出控制器")]
+    public ScreenFader startFader;
     public ScreenFader screenFader;
     [Tooltip("下一个场景的索引")]
     public int nextSceneIndex = -1;
+    public GameObject pressAnyKeyText;//开场界面的提示文字
 
     [Space]
     [Header("按键输入的响应设置")]
@@ -74,21 +76,62 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        player.enabled = false;
         StartCoroutine(SceneStartFadeIn());
     }
     private IEnumerator SceneStartFadeIn()
     {
-        if (screenFader != null)
+        //float time = 1f;
+        //if (SceneManager.GetActiveScene().buildIndex == 0) time = 2f;
+        //if (screenFader != null)
+        //{
+        //    StartCoroutine(screenFader.FadeIn(time));
+        //    yield return new WaitForSeconds(time);
+        //}
+        // 如果是第一个场景（索引0）
+        if (SceneManager.GetActiveScene().buildIndex == 0)
         {
-            StartCoroutine(screenFader.FadeIn(1f));
-            yield return new WaitForSeconds(1f);
+            // 显示"按任意键继续"提示（如果有）
+            if (pressAnyKeyText != null)
+                pressAnyKeyText.SetActive(true);
+
+            // 等待任意按键输入
+            while (!Input.anyKeyDown)
+            {
+                yield return null;
+            }
+
+            // 隐藏提示（如果有）
+            if (pressAnyKeyText != null)
+                pressAnyKeyText.SetActive(false);
+
+            // 开始场景image淡出
+            if (startFader != null && screenFader != null)
+            {
+                StartCoroutine(startFader.FadeIn(1f)); // 假设FadeOut是淡出方法
+                yield return new WaitForSeconds(1.5f); // 淡出后短暂等待
+                startFader.gameObject.SetActive(false);
+                StartCoroutine(screenFader.FadeIn(1f));
+                yield return new WaitForSeconds(1f);
+                player.enabled = true;
+            }
         }
+        else
+        {
+            if (screenFader != null)
+            {
+                StartCoroutine(screenFader.FadeIn(1f));
+                yield return new WaitForSeconds(1f);
+                player.enabled = true;
+            }
+        }
+
     }
     void Update()
     {
-        foreach(PathCondition pc in pathConditions)
+        foreach (PathCondition pc in pathConditions)
         {
-           //旋转角度如果符合要求就激活路径
+            //旋转角度如果符合要求就激活路径
             int count = 0;
             //检查所有的轴心有没有旋转到理想的位置
             for (int i = 0; i < pc.conditions.Count; i++)
@@ -104,9 +147,9 @@ public class GameManager : MonoBehaviour
                 {
                     count++;
                 }
-                
+
             }
-            foreach(SinglePath sp in pc.paths)
+            foreach (SinglePath sp in pc.paths)
                 sp.block.possiblePaths[sp.index].active = (count == pc.conditions.Count);//根据轴心有没有旋转到理想的位置来判断物体路径是否激活
         }
 
@@ -137,7 +180,7 @@ public class GameManager : MonoBehaviour
             foreach (PivotData pivot in pivots)
             {
                 if (pivot.pivotTransform == null) continue;
-                if(!pivot.dontRotate)
+                if (!pivot.dontRotate)
                 {
                     pivot.pivotTransform.DOComplete();
                     pivot.pivotTransform.DORotate(
@@ -178,11 +221,11 @@ public class GameManager : MonoBehaviour
                     targetPivot.DOMove(targetPos, heightDuration).SetEase(Ease.OutQuad);
                     PlayerController.instance.UpdateCurrentCube();
                     //敌人重新寻路
-                   if(targetEnemy!=null&&delayCoroutine==null)  delayCoroutine=StartCoroutine(DelayedRestartPatrol());
+                    if (targetEnemy != null && delayCoroutine == null) delayCoroutine = StartCoroutine(DelayedRestartPatrol());
                 }
             }
         }
-           
+
         foreach (Transform t in objectsToHide)
         {
             t.gameObject.SetActive(pivots[1].pivotTransform.eulerAngles.y > 45 && pivots[1].pivotTransform.eulerAngles.y < 90 + 45);
@@ -198,7 +241,7 @@ public class GameManager : MonoBehaviour
     {
         targetEnemy.StopPatrol();
         Debug.Log("停止寻路");
-        
+
         // 3. 等待0.5秒
         yield return new WaitForSeconds(.8f);
         Debug.Log("等完了.6s");
@@ -227,11 +270,11 @@ public class GameManager : MonoBehaviour
         targetPivot.DORotate(rotationVector, rotateDuration)
                    .SetEase(rotateEase);
     }
-    
+
     public void TransitionToNextScene()
     {
-        nextSceneIndex = SceneManager.GetActiveScene().buildIndex+1;
-        StartCoroutine(FadeOutAndLoadScene(nextSceneIndex));      
+        nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        StartCoroutine(FadeOutAndLoadScene(nextSceneIndex));
     }
 
     private IEnumerator FadeOutAndLoadScene(int sceneIndex)
@@ -313,5 +356,5 @@ public class PivotData//旋转轴数据类，储存每次按下键后的旋转�
     [Tooltip("旋转时长:每次旋转需要多久")]
     public float rotationDuration = 0.6f;
     [Tooltip("是否由按钮控制旋转")]
-    public bool dontRotate=false;
+    public bool dontRotate = false;
 }

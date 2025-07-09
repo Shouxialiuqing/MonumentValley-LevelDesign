@@ -13,11 +13,16 @@ public class AudioManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+    private void Start()
+    {
+        PlayLooping("Background");
     }
 
     // 从Audio文件夹加载音频
